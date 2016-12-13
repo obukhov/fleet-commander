@@ -1,0 +1,8 @@
+hash: b18f36185baac64185befa6509c67f7adc902ad70ae7b83c96896488160e4261
+updated: 2016-12-12T23:59:43.118074936+01:00
+imports:
+- name: github.com/coreos/fleet
+  version: be0c3c23c9cba3bc6129d06740e245aa6ef80a29
+- name: github.com/labstack/echo
+  version: 70b5cfbb26c70668255af545f743b2bd99e6e482
+devImports: []
