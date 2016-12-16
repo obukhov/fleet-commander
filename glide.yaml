@@ -2,3 +2,4 @@ package: github.com/obukhov/fleet-commander
 import:
 - package: github.com/coreos/fleet
 - package: github.com/labstack/echo
+- package: gopkg.in/yaml.v2

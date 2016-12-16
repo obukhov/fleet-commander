@@ -1,8 +1,10 @@
-hash: b18f36185baac64185befa6509c67f7adc902ad70ae7b83c96896488160e4261
-updated: 2016-12-12T23:59:43.118074936+01:00
+hash: 00ade15dc917185c5e8860f6d6f977ece2630cdd799979849e91b3b283483c9e
+updated: 2016-12-16T00:51:23.729001088+01:00
 imports:
 - name: github.com/coreos/fleet
   version: be0c3c23c9cba3bc6129d06740e245aa6ef80a29
 - name: github.com/labstack/echo
   version: 70b5cfbb26c70668255af545f743b2bd99e6e482
+- name: gopkg.in/yaml.v2
+  version: a5b47d31c556af34a302ce5d659e6fea44d90de0
 devImports: []
