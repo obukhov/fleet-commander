@@ -16,7 +16,7 @@ var (
 
 type ClusterConfigSource interface {
 	Config() *ClusterConfig
-	Refresh() error
+	Refresh() (bool, error)
 }
 
 type clusterConfigSourceFile struct {
@@ -33,24 +33,25 @@ func NewClusterConfigSourceFile(path string) ClusterConfigSource {
 	}
 }
 
-func (cf *clusterConfigSourceFile) Refresh() error {
+func (cf *clusterConfigSourceFile) Refresh() (bool, error) {
 	contents, err := ioutil.ReadFile(cf.configPath)
 	if nil != err {
-		return ERROR_READ_FILE
+		return false, ERROR_READ_FILE
 	}
 
 	config := &ClusterConfig{}
 	if err := yaml.Unmarshal(contents, config); nil != err {
-		return ERROR_FILE_STRUCTURE
+		return false, ERROR_FILE_STRUCTURE
 	}
 
 	if err := config.refresh(cf.baseDirectory); nil != err {
-		return err
+		return false, err
 	}
 
 	cf.config = config
 
-	return nil
+	//todo check if config was changed since last refresh and return false if it wasn't
+	return true, nil
 }
 
 func (cf *clusterConfigSourceFile) Config() *ClusterConfig {

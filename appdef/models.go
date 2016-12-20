@@ -19,8 +19,10 @@ type Application struct {
 }
 
 type Cluster struct {
-	Name     string
-	Endpoint string
+	Name        string
+	Endpoint    string
+	Tunnel      string
+	SshUsername string `yaml:"ssh-username"`
 }
 
 type ClusterConfig struct {

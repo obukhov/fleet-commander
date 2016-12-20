@@ -1,5 +1,5 @@
 NAME=fleet-cmd-server
-SOURCE=cmd/fleet-cmd-server/main.go
+SOURCE=cmd/fleet-cmd/main.go
 
 # dependencies that are used by the build&test process, these need to be installed in the
 DEPEND=github.com/jstemmer/go-junit-report github.com/Masterminds/glide
@@ -15,6 +15,7 @@ GOTEST=go test -v
 all: clean depend test build
 build:
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -o build/linux_amd64/$(NAME) $(SOURCE)
+	GOOS=darwin GOARCH=amd64 $(GOBUILD) -o build/darwin_amd64/$(NAME) $(SOURCE)
 test:
 	$(GOTEST) $(shell glide novendor)
 test_report:
