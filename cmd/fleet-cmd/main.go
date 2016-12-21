@@ -17,7 +17,12 @@ func main() {
 	appStatus, err := cmdr.Check()
 
 	if nil != err {
-		fmt.Println("Error:", err)
+		fmt.Println("Error checking:", err)
+		os.Exit(1)
+	}
+
+	if err := cmdr.Fix(appStatus); nil != err {
+		fmt.Println("Error fixing:", err)
 		os.Exit(1)
 	}
 

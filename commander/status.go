@@ -9,6 +9,6 @@ type UnitStatus struct {
 
 type AppStatus struct {
 	Name       string
-	UnitStatus []UnitStatus
+	UnitStatus map[string]UnitStatus
 }
 

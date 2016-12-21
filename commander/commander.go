@@ -5,6 +5,7 @@ import (
 	"github.com/obukhov/fleet-commander/appdef"
 	"errors"
 	"github.com/coreos/fleet/schema"
+	"github.com/coreos/fleet/unit"
 )
 
 var (
@@ -34,14 +35,14 @@ func (c *Commander) Refresh() error {
 	return nil
 }
 
-func (c *Commander) Check() ([]AppStatus, error) {
-	result := make([]AppStatus, 0)
+func (c *Commander) Check() (map[string]AppStatus, error) {
+	result := make(map[string]AppStatus, 0)
 	if err := c.Refresh(); nil != err {
 		return result, err
 	}
 
 	for _, app := range c.clusterConfigSource.Config().Apps {
-		appCheckStatus := AppStatus{}
+		appCheckStatus := AppStatus{Name:app.Name, UnitStatus:make(map[string]UnitStatus)} // todo constructor
 		appCheckStatus.Name = app.Name
 
 		clusterAPIClient, clusterFound := c.clusterClients[app.Cluster]
@@ -59,23 +60,57 @@ func (c *Commander) Check() ([]AppStatus, error) {
 			actualUnits[actualUnit.Name] = actualUnit
 		}
 
-		for _, unit := range app.Units {
-			unitStatus := UnitStatus{Name:unit.Name, IsFound:false, IsContentIdentical:false}
+		for _, defUnit := range app.Units {
+			unitStatus := UnitStatus{Name:defUnit.Name, IsFound:false, IsContentIdentical:false}
 
-			if actualUnit, unitFound := actualUnits[unit.Name]; true == unitFound {
+			if actualUnit, unitFound := actualUnits[defUnit.Name]; true == unitFound {
 				unitStatus.IsFound = true
 				unitStatus.Status = actualUnit.DesiredState
 
-				if unit.Content == schema.MapSchemaUnitOptionsToUnitFile(actualUnit.Options).String() {
+				if defUnit.Content == schema.MapSchemaUnitOptionsToUnitFile(actualUnit.Options).String() {
 					unitStatus.IsContentIdentical = true
 				}
 			}
 
-			appCheckStatus.UnitStatus = append(appCheckStatus.UnitStatus, unitStatus)
+			appCheckStatus.UnitStatus[defUnit.Name] = unitStatus
 		}
 
-		result = append(result, appCheckStatus)
+		result[app.Name] = appCheckStatus
 	}
 
 	return result, nil
+}
+
+func (c *Commander) Fix(appStatuses map[string]AppStatus) error {
+	for _, app := range c.clusterConfigSource.Config().Apps {
+		clusterAPIClient, clusterFound := c.clusterClients[app.Cluster]
+		if false == clusterFound {
+			return ERROR_CLUSTER_NOT_DEFINED
+		}
+
+		for _, defUnit := range app.Units {
+			status := appStatuses[app.Name].UnitStatus[defUnit.Name]
+
+			if false == status.IsFound || false == status.IsContentIdentical {
+				uf, err := unit.NewUnitFile(defUnit.Content)
+
+				if nil != err {
+					return err
+				}
+
+				options := schema.MapUnitFileToSchemaUnitOptions(uf)
+				schemaUnit := &schema.Unit{
+					Name: defUnit.Name,
+					Options: options,
+					DesiredState: "launched",
+				}
+
+				if err := clusterAPIClient.CreateUnit(schemaUnit); nil != err {
+					return err
+				}
+			}
+		}
+	}
+
+	return nil
 }

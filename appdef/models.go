@@ -15,7 +15,7 @@ type UnitFile struct {
 type Application struct {
 	Name    string
 	Cluster string
-	Units   []UnitFile
+	Units   []*UnitFile
 }
 
 type Cluster struct {
@@ -47,7 +47,7 @@ func (cc *ClusterConfig) refresh(baseDirectory string) error {
 	return nil
 }
 
-func (uf UnitFile) load(baseDirectory string) error {
+func (uf *UnitFile) load(baseDirectory string) error {
 	if "" != uf.Source {
 		bytesContent, err := ioutil.ReadFile(filepath.Join(baseDirectory, uf.Source))
 		if nil != err {
