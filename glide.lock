@@ -1,12 +1,12 @@
 hash: db905132f6dcddda182fdb7662ff1d07d3f7f3d2174d9776d681e58045d23de0
-updated: 2016-12-20T03:45:08.664311717+01:00
+updated: 2016-12-22T03:07:53.937922793+01:00
 imports:
 - name: github.com/beorn7/perks
   version: 4c0e84591b9aa9e6dcfdf3e020114cd81f89d5f9
   subpackages:
   - quantile
 - name: github.com/coreos/etcd
-  version: d62ce55584a064968c11b309f1d57a9c1872bc40
+  version: acbf0fa452477461dabcdc2eed1b541189ba1523
   subpackages:
   - client
   - pkg/pathutil
@@ -15,51 +15,71 @@ imports:
   version: 303ffeffb66f1b51d7152a2da3909e166bc3c1f5
   repo: https://github.com/obukhov/fleet.git
   subpackages:
-  - fleetctl
-  - api
   - client
   - job
   - log
   - machine
+  - metrics
   - pkg
+  - pkg/lease
+  - protobuf
   - registry
   - schema
   - ssh
   - unit
   - version
-  - protobuf
-  - metrics
-  - pkg/lease
 - name: github.com/coreos/go-semver
-  version: 9474efc580562cce8f761659fbce31b6feb8ce88
+  version: 568e959cd89871e61434c1143528d9162da89ef2
   subpackages:
   - semver
 - name: github.com/coreos/go-systemd
   version: 7c9533367ef925dc1078d75e5b7141e10da2c4e8
   subpackages:
   - unit
+- name: github.com/fsnotify/fsnotify
+  version: fd9ec7deca8bf46ecd2a795baaacf2b3a9be1197
 - name: github.com/gogo/protobuf
   version: 909568be09de550ed094403c2bf8a261b5bb730a
   subpackages:
-  - proto
   - gogoproto
+  - proto
   - protoc-gen-gogo/descriptor
 - name: github.com/golang/protobuf
-  version: 8ee79997227bf9b34611aee7946ae64735e6fd93
+  version: 4bd1920723d7b7c925de087aa32e2187708897f7
   subpackages:
+  - jsonpb
   - proto
+- name: github.com/hashicorp/hcl
+  version: 80e628d796135357b3d2e33a985c666b9f35eee1
+  subpackages:
+  - hcl/ast
+  - hcl/parser
+  - hcl/scanner
+  - hcl/strconv
+  - hcl/token
+  - json/parser
+  - json/scanner
+  - json/token
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/jonboulle/clockwork
-  version: bcac9884e7502bb2b474c0339d889cb981a2f27f
+  version: 2eee05ed794112d45db504eb05aa693efd2b8b09
 - name: github.com/labstack/echo
-  version: f5f75122ba5c8a134ba82df246b40329bc11f068
+  version: d9a6052c6798fa60ed4e6a7652d1d3a4a3e24a4d
+- name: github.com/magiconair/properties
+  version: 9c47895dc1ce54302908ab8a43385d1f5df2c11c
 - name: github.com/matttproud/golang_protobuf_extensions
   version: c12348ce28de40eed0136aa2b644d0ee0650e56c
   subpackages:
   - pbutil
+- name: github.com/mitchellh/mapstructure
+  version: bfdb1a85537d60bc7e954e600c250219ea497417
+- name: github.com/pelletier/go-buffruneio
+  version: df1e16fde7fc330a0ca68167c23bf7ed6ac31d6d
+- name: github.com/pelletier/go-toml
+  version: 017119f7a78a0b5fc0ea39ef6be09f03acf3345d
 - name: github.com/prometheus/client_golang
-  version: 575f371f7862609249a1be4c9145f429fe065e32
+  version: c5b7fccd204277076155f10851dad72b76a49317
   subpackages:
   - prometheus
 - name: github.com/prometheus/client_model
@@ -67,17 +87,27 @@ imports:
   subpackages:
   - go
 - name: github.com/prometheus/common
-  version: 195bde7883f7c39ea62b0d92ab7359b5327065cb
+  version: 6d76b79f239843a04e8ad8dfd8fcadfa3920236f
   subpackages:
   - expfmt
-  - model
   - internal/bitbucket.org/ww/goautoneg
+  - model
 - name: github.com/prometheus/procfs
   version: fcdb11ccb4389efb1b210b7ffb623ab71c5fdd60
+- name: github.com/spf13/afero
+  version: 2f30b2a92c0e5700bcfe4715891adb1f2a7a406d
+  subpackages:
+  - mem
+- name: github.com/spf13/cast
+  version: 24b6558033ffe202bf42f0f3b870dcc798dd2ba8
 - name: github.com/spf13/cobra
   version: b62566898a99f2db9c68ed0026aa0a052e59678d
+- name: github.com/spf13/jwalterweatherman
+  version: 33c24e77fb80341fe7130ee7c594256ff08ccc46
 - name: github.com/spf13/pflag
   version: 25f8b5b07aece3207895bf19f7ab517eb3b22a40
+- name: github.com/spf13/viper
+  version: 5ed0fc31f7f453625df314d8e66b9791e8d13003
 - name: github.com/ugorji/go
   version: 9c7f9b7a2bc3a520f7c7b30b34b7f85f47fe27b6
   subpackages:
@@ -91,6 +121,8 @@ imports:
 - name: golang.org/x/crypto
   version: 1351f936d976c60a0a48d728281922cf63eafb8d
   subpackages:
+  - bcrypt
+  - blowfish
   - ssh
   - ssh/agent
   - ssh/terminal
@@ -100,14 +132,23 @@ imports:
   - context
   - context/ctxhttp
   - http2
-  - trace
   - http2/hpack
   - internal/timeseries
+  - trace
+- name: golang.org/x/sys
+  version: d75a52659825e75fff6158388dddc6a5b04f9ba5
+  subpackages:
+  - unix
+- name: golang.org/x/text
+  version: a49bea13b776691cb1b49873e5d8df96ec74831a
+  subpackages:
+  - transform
+  - unicode/norm
 - name: google.golang.org/api
   version: 55146ba61254fdb1c26d65ff3c04bc1611ad73fb
   subpackages:
-  - googleapi
   - gensupport
+  - googleapi
   - googleapi/internal/uritemplates
 - name: google.golang.org/grpc
   version: 777daa17ff9b5daef1cfdf915088a2ada3332bf0
@@ -122,4 +163,4 @@ imports:
   - transport
 - name: gopkg.in/yaml.v2
   version: a5b47d31c556af34a302ce5d659e6fea44d90de0
-devImports: []
+testImports: []
