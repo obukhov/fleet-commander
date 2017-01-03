@@ -11,4 +11,3 @@ type AppStatus struct {
 	Name       string
 	UnitStatus map[string]UnitStatus
 }
-

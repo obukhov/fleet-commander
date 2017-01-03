@@ -1,11 +1,11 @@
 package commander
 
 import (
-	"github.com/coreos/fleet/client"
-	"github.com/obukhov/fleet-commander/appdef"
 	"errors"
+	"github.com/coreos/fleet/client"
 	"github.com/coreos/fleet/schema"
 	"github.com/coreos/fleet/unit"
+	"github.com/obukhov/fleet-commander/appdef"
 )
 
 var (
@@ -19,7 +19,7 @@ type Commander struct {
 
 func NewCommander(ccs appdef.ClusterConfigSource) *Commander {
 	return &Commander{
-		clusterConfigSource:ccs,
+		clusterConfigSource: ccs,
 	}
 }
 
@@ -42,7 +42,7 @@ func (c *Commander) Check() (map[string]AppStatus, error) {
 	}
 
 	for _, app := range c.clusterConfigSource.Config().Apps {
-		appCheckStatus := AppStatus{Name:app.Name, UnitStatus:make(map[string]UnitStatus)} // todo constructor
+		appCheckStatus := AppStatus{Name: app.Name, UnitStatus: make(map[string]UnitStatus)} // todo constructor
 		appCheckStatus.Name = app.Name
 
 		clusterAPIClient, clusterFound := c.clusterClients[app.Cluster]
@@ -61,7 +61,7 @@ func (c *Commander) Check() (map[string]AppStatus, error) {
 		}
 
 		for _, defUnit := range app.Units {
-			unitStatus := UnitStatus{Name:defUnit.Name, IsFound:false, IsContentIdentical:false}
+			unitStatus := UnitStatus{Name: defUnit.Name, IsFound: false, IsContentIdentical: false}
 
 			if actualUnit, unitFound := actualUnits[defUnit.Name]; true == unitFound {
 				unitStatus.IsFound = true
@@ -100,8 +100,8 @@ func (c *Commander) Fix(appStatuses map[string]AppStatus) error {
 
 				options := schema.MapUnitFileToSchemaUnitOptions(uf)
 				schemaUnit := &schema.Unit{
-					Name: defUnit.Name,
-					Options: options,
+					Name:         defUnit.Name,
+					Options:      options,
 					DesiredState: "launched",
 				}
 

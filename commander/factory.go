@@ -14,22 +14,22 @@ var (
 func APIClientByConfig(cluster appdef.Cluster) (client.API, error) {
 	return client.GetClient(&client.ClientConfig{
 		SSHConfig: &client.SSHConfig{
-			Tunnel: "",
-			SSHUserName: "",
+			Tunnel:                "",
+			SSHUserName:           "",
 			StrictHostKeyChecking: false,
-			KnownHostsFile: "",
-			SshTimeout: 3.0,
+			KnownHostsFile:        "",
+			SshTimeout:            3.0,
 		},
 
 		ClientDriver: client.ClientDriverAPI,
-		EndPoint: cluster.Endpoint,
-		ReqTimeout: 10.0,
+		EndPoint:     cluster.Endpoint,
+		ReqTimeout:   10.0,
 
-		CAFile: "",
+		CAFile:   "",
 		CertFile: "",
-		KeyFile: "",
+		KeyFile:  "",
 
-		EtcdKeyPrefix: "",
+		EtcdKeyPrefix:   "",
 		ExperimentalAPI: false,
 	})
 }

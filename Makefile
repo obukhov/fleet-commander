@@ -1,5 +1,5 @@
-NAME=fleet-cmd-server
-SOURCE=cmd/fleet-cmd/main.go
+NAME=fleetcmd
+SOURCE=cmd/fleetcmd/main.go
 
 # dependencies that are used by the build&test process, these need to be installed in the
 DEPEND=github.com/jstemmer/go-junit-report github.com/Masterminds/glide
@@ -28,3 +28,5 @@ clean:
 depend:
 	go get -u -v $(DEPEND)
 	glide install
+install:
+	go install $(SOURCE)

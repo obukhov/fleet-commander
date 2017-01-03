@@ -10,8 +10,8 @@ import (
 var cleanCmd = &cobra.Command{
 	Use:   "clean",
 	Short: "",
-	Long: ``,
-	Run: runCleanCmd,
+	Long:  ``,
+	Run:   runCleanCmd,
 }
 
 func init() {

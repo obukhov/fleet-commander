@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/spf13/cobra"
 	"github.com/obukhov/fleet-commander/appdef"
 	"github.com/obukhov/fleet-commander/commander"
+	"github.com/spf13/cobra"
 	"os"
 )
 
@@ -34,7 +34,7 @@ func init() {
 }
 
 func runCheckCommand(cmd *cobra.Command, args []string) {
-	clusterConfig := appdef.NewClusterConfigSourceFile("../../example/cluster.yaml")
+	clusterConfig := appdef.NewClusterConfigSourceFile("../../example/fleetcmd.yaml")
 	cmdr := commander.NewCommander(clusterConfig)
 
 	appStatus, err := cmdr.Check()
